@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <link-list></link-list>
+    <create-link></create-link>
   </div>
 </template>
 
 <script>
+import CreateLink from './components/CreateLink'
 import LinkList from './components/LinkList'
 export default {
   name: 'App',
   components: {
+   CreateLink,
       LinkList
     }
 }
