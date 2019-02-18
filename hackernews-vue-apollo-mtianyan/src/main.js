@@ -1,76 +1,81 @@
 // 1
-import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws'
-import { ApolloClient } from 'apollo-client'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import {
+  SubscriptionClient,
+  addGraphQLSubscriptions
+} from "subscriptions-transport-ws";
+import { ApolloClient } from "apollo-client";
+import { HttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
 
 // 1
-import { ApolloLink } from 'apollo-link'
+import { ApolloLink } from "apollo-link";
 
-import 'tachyons'
-import Vue from 'vue'
+import "tachyons";
+import Vue from "vue";
 // 2
-import VueApollo from 'vue-apollo'
-import { GC_USER_ID, GC_AUTH_TOKEN  } from './constants/settings'
-import App from './App'
-import router from './router'
-Vue.config.productionTip = false
+import VueApollo from "vue-apollo";
+import { GC_USER_ID, GC_AUTH_TOKEN } from "./constants/settings";
+import App from "./App";
+import router from "./router";
+Vue.config.productionTip = false;
 
 // 3
 const httpLink = new HttpLink({
   // You should use an absolute URL here
-  uri: 'https://api.graph.cool/simple/v1/cjs5snl0w22990114nl9f8sgr'
-})
+  uri: "https://api.graph.cool/simple/v1/cjs5snl0w22990114nl9f8sgr"
+});
 
 // 订阅更新客户端
-const wsClient = new SubscriptionClient('wss://subscriptions.graph.cool/v1/cjs5snl0w22990114nl9f8sgr', {
-  reconnect: true,
-  connectionParams: {
-    authToken: localStorage.getItem(GC_AUTH_TOKEN)
+const wsClient = new SubscriptionClient(
+  "wss://subscriptions.graph.cool/v1/cjs5snl0w22990114nl9f8sgr",
+  {
+    reconnect: true,
+    connectionParams: {
+      authToken: localStorage.getItem(GC_AUTH_TOKEN)
+    }
   }
-})
+);
 
 // 要放在httpLink 和 ApolloClient之间
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
-  const token = localStorage.getItem(GC_AUTH_TOKEN)
+  const token = localStorage.getItem(GC_AUTH_TOKEN);
   operation.setContext({
     headers: {
       authorization: token ? `Bearer ${token}` : null
     }
-  })
+  });
 
-  return forward(operation)
-})
+  return forward(operation);
+});
 
 const httpLinkWithSubscriptions = addGraphQLSubscriptions(
   authMiddleware.concat(httpLink),
   wsClient
-)
-
+);
 
 // 4
 const apolloClient = new ApolloClient({
   link: httpLinkWithSubscriptions,
   cache: new InMemoryCache(),
   connectToDevTools: true
-})
+});
 
 // 5
-Vue.use(VueApollo)
+Vue.use(VueApollo);
 
 // 6
 const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
   defaultOptions: {
-    $loadingKey: 'loading'
+    $loadingKey: "loading"
   }
-})
-let userId = localStorage.getItem(GC_USER_ID)
+});
+let userId = localStorage.getItem(GC_USER_ID);
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: "#app",
   // 7
   provide: apolloProvider.provide(),
   router,
@@ -79,4 +84,4 @@ new Vue({
     userId
   },
   render: h => h(App)
-})
+});

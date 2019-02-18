@@ -1,0 +1,6 @@
+endpoint: https://us1.prisma.sh/1147727180-f1a4e8/hello-world/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: go-client
+    output: ./generated/prisma-client/

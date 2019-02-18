@@ -20,21 +20,21 @@
 </template>
 
 <script>
-import { GC_USER_ID, GC_AUTH_TOKEN } from "../constants/settings";
+  import { GC_USER_ID, GC_AUTH_TOKEN } from '../constants/settings'
 
-export default {
-  name: "AppHeader",
-  computed: {
-    userId() {
-      return this.$root.$data.userId;
-    }
-  },
-  methods: {
-    logout() {
-      localStorage.removeItem(GC_USER_ID);
-      localStorage.removeItem(GC_AUTH_TOKEN);
-      this.$root.$data.userId = localStorage.getItem(GC_USER_ID);
+  export default {
+    name: 'AppHeader',
+    computed: {
+      userId () {
+        return this.$root.$data.userId
+      }
+    },
+    methods: {
+      logout () {
+        localStorage.removeItem(GC_USER_ID)
+        localStorage.removeItem(GC_AUTH_TOKEN)
+        this.$root.$data.userId = localStorage.getItem(GC_USER_ID)
+      }
     }
   }
-};
 </script>

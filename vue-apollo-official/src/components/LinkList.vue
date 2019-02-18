@@ -18,9 +18,11 @@
 
 <script>
   import _ from 'lodash'
+
   import { ALL_LINKS_QUERY, NEW_LINKS_SUBSCRIPTION, NEW_VOTES_SUBSCRIPTION } from '../constants/graphql'
   import { LINKS_PER_PAGE } from '../constants/settings'
   import LinkItem from './LinkItem'
+
   export default {
     name: 'LinkList',
     data () {
